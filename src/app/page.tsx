@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
+import { registerUser } from "./utils/axios";
 const page = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [isFocused1, setIsFocused1] = useState(false);
@@ -10,19 +11,30 @@ const page = () => {
   const [name, setName] = useState<String | any>("");
   const [email, setEmail] = useState<String | any>("");
   const [password, setPassword] = useState<String | any>("");
-  const [confirm, setConfirm] = useState<String | any>("");
+  const [confirmPassword, setConfirmPassword] = useState<String | any>("");
 
-  // useEffect(() => {
-  //   onsubmit = () => {
-  //     setConfirm("");
-  //     setEmail("");
-  //     setName("");
-  //     setPassword("");
-  //   };
-  // }, []);
+const [inputValue, setInputValue] = useState<String | any>("");
+const [error, setError] = useState<String | any>("");
+
+
+const handleInputChange = (e:any) => {
+  const value = e.target.value;
+  setInputValue(value);
+  setError('');
+};
+
+const handleSubmit = (e:any) => {
+  e.preventDefault();
+  if (inputValue.trim() === '') {
+    setError('Please fill out this field');
+  } else {
+    console.log('Form submitted:', inputValue);
+  }
+};
+
   return (
     <div className="w-full h-[100vh] bg-slate-400 flex justify-center items-center">
-      <div className="w-[450px] min-h-[200px] shadow-sm bg-white text-black rounded-md p-3">
+      <form onSubmit={handleSubmit} className="w-[450px] min-h-[200px] shadow-sm bg-white text-black rounded-md p-3">
         <div className="text-center text-[20px] font-semibold ">
           Register With Us
         </div>
@@ -43,11 +55,12 @@ const page = () => {
             value={name}
             onChange={(e: any) => {
               setName(e.target.value);
+              handleInputChange(e);
             }}
           />
-          <span className="flex justify-end text-[12px] text-red-500">
-            error
-          </span>
+        {  error && <span className="flex justify-end text-[12px] text-red-500">
+            {error}
+          </span>}
         </div>
 
         <div className="mt-[5px]">
@@ -67,11 +80,12 @@ const page = () => {
             value={email}
             onChange={(e: any) => {
               setEmail(e.target.value);
+              handleInputChange(e);
             }}
           />
-          <span className="flex justify-end text-[12px] text-red-500">
-            error
-          </span>
+           {  error && <span className="flex justify-end text-[12px] text-red-500">
+            {error}
+          </span>}
         </div>
 
         <div className="mt-[5px]">
@@ -91,11 +105,12 @@ const page = () => {
             value={password}
             onChange={(e: any) => {
               setPassword(e.target.value);
+              handleInputChange(e);
             }}
           />
-          <span className="flex justify-end text-[12px] text-red-500">
-            error
-          </span>
+          {  error && <span className="flex justify-end text-[12px] text-red-500">
+            {error}
+          </span>}
         </div>
 
         <div className="mt-[5px]">
@@ -112,20 +127,30 @@ const page = () => {
             onBlur={() => {
               setIsFocused3(false);
             }}
-            value={confirm}
+            value={confirmPassword}
             onChange={(e: any) => {
-              setConfirm(e.target.value);
+              setConfirmPassword(e.target.value);
+              handleInputChange(e);
             }}
           />
-          <span className="flex justify-end text-[12px] text-red-500">
-            error
-          </span>
+         {  error && <span className="flex justify-end text-[12px] text-red-500">
+            {error}
+          </span>}
         </div>
 
-        <button className="w-full h-[40px] bg-black text-white mt-[15px] hover:cursor-pointer duration-500 transition-all rounded-md">
+        <button
+          className="w-full h-[40px] bg-black text-white mt-[15px] hover:cursor-pointer duration-500 transition-all rounded-md"
+          onClick={() => {
+            registerUser({ name, password, confirmPassword, email }).then(
+              (res: any) => {
+                console.log(res);
+              }
+            );
+          }}
+        >
           Submit
         </button>
-      </div>
+      </form>
     </div>
   );
 };
