@@ -1,8 +1,10 @@
 "use client";
 
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { registerUser } from "./utils/axios";
+import { useFormStatus } from "react-dom";
 const page = () => {
+  const { pending } = useFormStatus();
   const [isFocused, setIsFocused] = useState(false);
   const [isFocused1, setIsFocused1] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
@@ -13,28 +15,30 @@ const page = () => {
   const [password, setPassword] = useState<String | any>("");
   const [confirmPassword, setConfirmPassword] = useState<String | any>("");
 
-const [inputValue, setInputValue] = useState<String | any>("");
-const [error, setError] = useState<String | any>("");
+  const [inputValue, setInputValue] = useState<String | any>("");
+  const [error, setError] = useState<String | any>("");
 
+  const handleInputChange = (e: any) => {
+    const value = e.target.value;
+    setInputValue(value);
+    setError("");
+  };
 
-const handleInputChange = (e:any) => {
-  const value = e.target.value;
-  setInputValue(value);
-  setError('');
-};
-
-const handleSubmit = (e:any) => {
-  e.preventDefault();
-  if (inputValue.trim() === '') {
-    setError('Please fill out this field');
-  } else {
-    console.log('Form submitted:', inputValue);
-  }
-};
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (inputValue.trim() === "") {
+      setError("Please fill out this field");
+    } else {
+      console.log("Form submitted:", inputValue);
+    }
+  };
 
   return (
     <div className="w-full h-[100vh] bg-slate-400 flex justify-center items-center">
-      <form onSubmit={handleSubmit} className="w-[450px] min-h-[200px] shadow-sm bg-white text-black rounded-md p-3">
+      <form
+        onSubmit={handleSubmit}
+        className="w-[450px] min-h-[200px] shadow-sm bg-white text-black rounded-md p-3"
+      >
         <div className="text-center text-[20px] font-semibold ">
           Register With Us
         </div>
@@ -58,9 +62,11 @@ const handleSubmit = (e:any) => {
               handleInputChange(e);
             }}
           />
-        {  error && <span className="flex justify-end text-[12px] text-red-500">
-            {error}
-          </span>}
+          {error && (
+            <span className="flex justify-end text-[12px] text-red-500">
+              {error}
+            </span>
+          )}
         </div>
 
         <div className="mt-[5px]">
@@ -83,9 +89,11 @@ const handleSubmit = (e:any) => {
               handleInputChange(e);
             }}
           />
-           {  error && <span className="flex justify-end text-[12px] text-red-500">
-            {error}
-          </span>}
+          {error && (
+            <span className="flex justify-end text-[12px] text-red-500">
+              {error}
+            </span>
+          )}
         </div>
 
         <div className="mt-[5px]">
@@ -108,9 +116,11 @@ const handleSubmit = (e:any) => {
               handleInputChange(e);
             }}
           />
-          {  error && <span className="flex justify-end text-[12px] text-red-500">
-            {error}
-          </span>}
+          {error && (
+            <span className="flex justify-end text-[12px] text-red-500">
+              {error}
+            </span>
+          )}
         </div>
 
         <div className="mt-[5px]">
@@ -133,9 +143,11 @@ const handleSubmit = (e:any) => {
               handleInputChange(e);
             }}
           />
-         {  error && <span className="flex justify-end text-[12px] text-red-500">
-            {error}
-          </span>}
+          {error && (
+            <span className="flex justify-end text-[12px] text-red-500">
+              {error}
+            </span>
+          )}
         </div>
 
         <button
@@ -147,6 +159,7 @@ const handleSubmit = (e:any) => {
               }
             );
           }}
+          aria-disabled={pending}
         >
           Submit
         </button>
